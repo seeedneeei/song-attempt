@@ -3,48 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Player</title>
+    <title>Fav Songs Player</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-        }
-        .controls {
-            margin-top: 10px;
-        }
-        button {
-            margin: 5px;
-            padding: 10px;
-            font-size: 16px;
-            cursor: pointer;
-        }
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .controls { margin-top: 10px; }
+        button { margin: 5px; padding: 10px; font-size: 16px; cursor: pointer; }
     </style>
 </head>
 <body>
-    <h2>Simple Music Player</h2>
-    <p id="song-title">Current Song: Loading...</p>
+    <p id="current-song">Current Song: None</p>
     <audio id="audio" controls></audio>
     <div class="controls">
-        <button onclick="prevSong()">⏮ Previous</button>
+        <button onclick="prevSong()">Previous</button>
         <button onclick="playPause()">Play/Pause</button>
-        <button onclick="nextSong()">⏭ Next</button>
+        <button onclick="nextSong()">Next</button>
+        <button onclick="shuffleSongs()">Shuffle</button>
     </div>
-
+    
     <script>
-        // List of MP3 files in the same repository
         const songs = [
-            { title: "Beauty and a Beat", file: "beautyandabeat.mp3" },
-            { title: "Mean It", file: "meanit.mp3" },
-            { title: "Paris in the Rain", file: "parisintherain.mp3" },
-            { title: "Never Say Never", file: "neversaynever.mp3" },
-            { title: "Drinks or Coffee", file: "drinksorcoffee.mp3" },
-            { title: "Toxic Till the End", file: "toxictilltheend.mp3" }
+            { title: "Beauty and a Beat", url: "https://audio.jukehost.co.uk/9mS8cP0AT0Nr4m601jmC7F5bxLV26utS" },
+            { title: "Drinks or Coffee", url: "https://audio.jukehost.co.uk/nYbrMTwjcOq8N9Rlz5GmgQGKPe0MnVyx" },
+            { title: "Mean It", url: "https://audio.jukehost.co.uk/SyzHkAGbpgQJyA9aiODZd0AX2VIIVR6m" },
+            { title: "Never Say Never", url: "https://audio.jukehost.co.uk/uUgnsuBoupsZmUe1jVq0e0AG9UNrnxOr" },
+            { title: "Paris in the Rain", url: "https://audio.jukehost.co.uk/WPa0Ld8qO4eVLqxw07fNUcbxd2SsEw9D" }
         ];
 
         let currentIndex = 0;
         const audio = document.getElementById("audio");
-        const songTitle = document.getElementById("song-title");
+        const songTitle = document.getElementById("current-song");
 
         function loadSong(index) {
             if (index < 0) {
@@ -54,10 +41,9 @@
             } else {
                 currentIndex = index;
             }
-
-            const song = songs[currentIndex];
-            audio.src = `songs/${song.title}`;
-            songTitle.innerText = "Now Playing: " + song.title;
+            audio.src = songs[currentIndex].url;
+            songTitle.innerText = 'Current Song: ' + (songs[currentIndex].title || 'Unknown');
+            audio.load();
             audio.play();
         }
 
@@ -70,25 +56,23 @@
         }
 
         function nextSong() {
-            currentIndex = (currentIndex + 1) % songs.length;
-            loadSong(currentIndex);
+            loadSong(currentIndex + 1);
         }
 
         function prevSong() {
-            currentIndex = (currentIndex - 1 + songs.length) % songs.length;
-            loadSong(currentIndex);
+            loadSong(currentIndex - 1);
         }
-
-        document.getElementById("audio").addEventListener("ended", nextSong);
 
         function shuffleSongs() {
-            currentIndex = Math.floor(Math.random() * songs.length);
+            for (let i = songs.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [songs[i], songs[j]] = [songs[j], songs[i]];
+            }
+            currentIndex = 0;
             loadSong(currentIndex);
         }
 
-        document.addEventListener("DOMContentLoaded", function () {
-            loadSong(0);
-        });
+        loadSong(currentIndex);
     </script>
 </body>
 </html>
