@@ -1,37 +1,50 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fav Songs Player</title>
+    <title>Music Player</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        .controls { margin: 10px; }
-        button { margin: 5px; padding: 10px; font-size: 16px; cursor: pointer; }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .controls {
+            margin-top: 10px;
+        }
+        button {
+            margin: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <p id="current-song">Current Song: None</p>
+    <h2>Simple Music Player</h2>
+    <p id="song-title">Current Song: Loading...</p>
     <audio id="audio" controls></audio>
     <div class="controls">
-        <button onclick="prevSong()">Previous</button>
+        <button onclick="prevSong()">⏮ Previous</button>
         <button onclick="playPause()">Play/Pause</button>
-        <button onclick="nextSong()">Next</button>
-        <button onclick="shuffleSongs()">Shuffle</button>
+        <button onclick="nextSong()">⏭ Next</button>
     </div>
 
     <script>
+        // List of MP3 files in the same repository
         const songs = [
-            { title: "Beauty and a Beat", url: "https://www.dropbox.com/scl/fi/o9tsgujyejfd24ev1e2lh/beautyandabeat.mp3?raw=1" },
-            { title: "Drinks or Coffee", url: "https://www.dropbox.com/scl/fi/zja2t0xq1igyo6uy1ydi9/drinksorcoffee.mp3?raw=1" },
-            { title: "Mean It", url: "https://www.dropbox.com/scl/fi/psvhsixv9zpdwepgvmbjd/meanit.mp3?raw=1" },
-            { title: "Never Say Never", url: "https://www.dropbox.com/scl/fi/dfhab7bkbcfdsb9vbyju9/neversaynever.mp3?raw=1" },
-            { title: "Paris in the Rain", url: "https://www.dropbox.com/scl/fi/2q12zj4ozjfzavklb21a1/parisintherain.mp3?raw=1" },
-            { title: "Toxic Till the End", url: "https://www.dropbox.com/scl/fi/g5l0ca8del481i2vsflrj/toxictilltheend.mp3?raw=1" }
+            { title: "Beauty and a Beat", file: "beautyandabeat.mp3" },
+            { title: "Mean It", file: "meanit.mp3" },
+            { title: "Paris in the Rain", file: "parisintherain.mp3" },
+            { title: "Never Say Never", file: "neversaynever.mp3" },
+            { title: "Drinks or Coffee", file: "drinksorcoffee.mp3" },
+            { title: "Toxic Till the End", file: "toxictilltheend.mp3" }
         ];
 
         let currentIndex = 0;
         const audio = document.getElementById("audio");
-        const songTitle = document.getElementById("current-song");
+        const songTitle = document.getElementById("song-title");
 
         function loadSong(index) {
             if (index < 0) {
@@ -41,9 +54,10 @@
             } else {
                 currentIndex = index;
             }
-            audio.src = songs[currentIndex].url;
-            songTitle.innerText = 'Current Song:' + songs[currentIndex].title;
-            audio.load();
+
+            const song = songs[currentIndex];
+            audio.src = `songs/${song.title}`;
+            songTitle.innerText = "Now Playing: " + song.title;
             audio.play();
         }
 
@@ -55,7 +69,7 @@
             }
         }
 
-        function nextSong() [
+        function nextSong() {
             currentIndex = (currentIndex + 1) % songs.length;
             loadSong(currentIndex);
         }
@@ -65,16 +79,16 @@
             loadSong(currentIndex);
         }
 
+        document.getElementById("audio").addEventListener("ended", nextSong);
+
         function shuffleSongs() {
-            for (let i = songs.length - 1; i > 0; i --) {
-                 const j = Math.floor(Math.random() * (i + 1));
-                [songs[i], songs[j]] = [songs[j], songs[i]];
-            }
-            currentIndex = 0;
+            currentIndex = Math.floor(Math.random() * songs.length);
             loadSong(currentIndex);
         }
 
-        loadSong(currentIndex);
+        document.addEventListener("DOMContentLoaded", function () {
+            loadSong(0);
+        });
     </script>
 </body>
 </html>
