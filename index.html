@@ -2,15 +2,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fav songs</title>
+    <title>Fav Songs Player</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; }
-        .controls { margin: 20px; }
-        button { margin: 5px; padding: 10px; cursor: pointer; }
+        .controls { margin: 10px; }
+        button { margin: 5px; padding: 10px; font-size: 16px; cursor: pointer; }
     </style>
 </head>
 <body>
-    <h1>Shuffe Songs</h1>
     <p id="current-song">Current Song: None</p>
     <audio id="audio" controls></audio>
     <div class="controls">
@@ -22,12 +21,12 @@
 
     <script>
         const songs = [
-            { title: "Song 1", url: "https://drive.google.com/uc?export=download&id=1OwEvW6Et8VGEhYCFByO-sYkWbz-B4U6V" },
-            { title: "Song 2", url: "https://drive.google.com/uc?export=download&id=19IzN8-R1PAcRGM2enB2jvtvjA6McIlc2" },
-            { title: "Song 3", url: "https://drive.google.com/uc?export=download&id=1YPPbbFprkuIdQFKOTrk7vAZtZ4dyEvNt" },
-            { title: "Song 4", url: "https://drive.google.com/uc?export=download&id=19bxCKrGEZrCHbc-Zmobm-rqDxAQrt0hO" },
-            { title: "Song 5", url: "https://drive.google.com/uc?export=download&id=1X-14hdRaXBMh0omvPHCVN5eAQGCglp3Z" },
-            { title: "Song 6", url: "https://drive.google.com/uc?export=download&id=1hYktFI2TuGXeLVmV8UVgjq05nYYCEAHz" }
+            { title: "Beauty and a Beat", url: "https://www.dropbox.com/scl/fi/o9tsgujyejfd24ev1e2lh/beautyandabeat.mp3?raw=1" },
+            { title: "Drinks or Coffee", url: "https://www.dropbox.com/scl/fi/zja2t0xq1igyo6uy1ydi9/drinksorcoffee.mp3?raw=1" },
+            { title: "Mean It", url: "https://www.dropbox.com/scl/fi/psvhsixv9zpdwepgvmbjd/meanit.mp3?raw=1" },
+            { title: "Never Say Never", url: "https://www.dropbox.com/scl/fi/dfhab7bkbcfdsb9vbyju9/neversaynever.mp3?raw=1" },
+            { title: "Paris in the Rain", url: "https://www.dropbox.com/scl/fi/2q12zj4ozjfzavklb21a1/parisintherain.mp3?raw=1" },
+            { title: "Toxic Till the End", url: "https://www.dropbox.com/scl/fi/g5l0ca8del481i2vsflrj/toxictilltheend.mp3?raw=1" }
         ];
 
         let currentIndex = 0;
@@ -42,16 +41,10 @@
             } else {
                 currentIndex = index;
             }
-
-            const song = songs[currentIndex];
-            if (song.title && song.url) {
-                songTitle.innerText = 'Current Song: + songTitle;
-                audio.src = song.url;
-                audio.play();
-            } else {
-                songTitle.innerText = 'Current Song: Unknown';
-                audio.src = "";
-            }
+            audio.src = songs[currentIndex].url;
+            songTitle.innerText = 'Current Song:' + songs[currentIndex].title;
+            audio.load();
+            audio.play();
         }
 
         function playPause() {
@@ -63,7 +56,8 @@
         }
 
         function nextSong() [
-            loadSong(currentIndex + 1);
+            currentIndex = (currentIndex + 1) % songs.length;
+            loadSong(currentIndex);
         }
 
         function prevSong() {
@@ -72,8 +66,8 @@
         }
 
         function shuffleSongs() {
-            for (let i = songs.length - 1; i > 0; i -- {
-                 let j = Math.floor(Math.random() * (i + 1));
+            for (let i = songs.length - 1; i > 0; i --) {
+                 const j = Math.floor(Math.random() * (i + 1));
                 [songs[i], songs[j]] = [songs[j], songs[i]];
             }
             currentIndex = 0;
