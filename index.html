@@ -3,88 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dreamy Music Player 🎶</title>
+    <title>Fav Songs Player</title>
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: Arial, sans-serif;
             text-align: center;
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fad0c4, #fbc2eb, #a18cd1);
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fad0c4, #fbc2eb);
             background-size: 400% 400%;
             animation: gradientBG 10s ease infinite;
+            color: white;
             height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            color: white;
         }
-
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
+        .controls {
+            margin-top: 20px;
+        }
+        button {
+            margin: 10px;
+            padding: 12px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            backdrop-filter: blur(5px);
+            transition: 0.3s;
+        }
+        button:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
         #current-song {
             font-size: 24px;
             font-weight: bold;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
-
         audio {
+            margin-top: 20px;
             width: 80%;
             max-width: 400px;
-            margin-top: 20px;
-            filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.6));
-        }
-
-        .controls button {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            padding: 12px 20px;
-            margin: 10px;
-            font-size: 18px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-            color: white;
-            text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-        }
-
-        .controls button:hover {
-            background: rgba(255, 255, 255, 0.4);
-            transform: scale(1.1);
-        }
-
-        .glow {
-            animation: glowEffect 1.5s infinite alternate;
-        }
-
-        @keyframes glowEffect {
-            0% { text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.6); }
-            100% { text-shadow: 0px 0px 16px rgba(255, 255, 255, 1); }
         }
     </style>
 </head>
 <body>
-    <p id="current-song" class="glow">Current Song: None</p>
+    <p id="current-song">Current Song: None</p>
     <audio id="audio" controls></audio>
     <div class="controls">
-        <button onclick="prevSong()">⏮ Previous</button>
-        <button onclick="playPause()">▶️ Play/Pause</button>
-        <button onclick="nextSong()">⏭ Next</button>
-        <button onclick="shuffleSongs()">🔀 Shuffle</button>
+        <button onclick="prevSong()">Previous</button>
+        <button onclick="playPause()">Play/Pause</button>
+        <button onclick="nextSong()">Next</button>
+        <button onclick="shuffleSongs()">Shuffle</button>
     </div>
     
     <script>
         const songs = [
-            { title: "Beauty and a Beat", url: "https://audio.jukehost.co.uk/9mS8cP0AT0Nr4m601jmC7F5bxLV26utS" },
             { title: "Drinks or Coffee", url: "https://audio.jukehost.co.uk/nYbrMTwjcOq8N9Rlz5GmgQGKPe0MnVyx" },
             { title: "Mean It", url: "https://audio.jukehost.co.uk/SyzHkAGbpgQJyA9aiODZd0AX2VIIVR6m" },
             { title: "Never Say Never", url: "https://audio.jukehost.co.uk/uUgnsuBoupsZmUe1jVq0e0AG9UNrnxOr" },
-            { title: "Paris in the Rain", url: "https://audio.jukehost.co.uk/WPa0Ld8qO4eVLqxw07fNUcbxd2SsEw9D" }
+            { title: "Paris in the Rain", url: "https://audio.jukehost.co.uk/WPa0Ld8qO4eVLqxw07fNUcbxd2SsEw9D" },
+            { title: "Toxic Till the End", url: "https://audio.jukehost.co.uk/FtR2iFX5JwMubZJ8HN8WMrawHMhniZuT" }
         ];
 
         let currentIndex = 0;
@@ -114,11 +99,13 @@
         }
 
         function nextSong() {
-            loadSong(currentIndex + 1);
+            currentIndex = (currentIndex + 1) % songs.length;
+            loadSong(currentIndex);
         }
 
         function prevSong() {
-            loadSong(currentIndex - 1);
+            currentIndex = (currentIndex - 1 + songs.length) % songs.length;
+            loadSong(currentIndex);
         }
 
         function shuffleSongs() {
@@ -132,6 +119,5 @@
 
         loadSong(currentIndex);
     </script>
-
 </body>
 </html>
