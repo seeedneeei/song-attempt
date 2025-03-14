@@ -22,21 +22,24 @@
 
     <script>
         const songs = [
-            'songs/drinksorcoffee.mp3',
-            'songs/meanit.mp3',
-            'songs/neversaynever.mp3',
-            'songs/parisintherain.mp3',
-            'songs/toxictilltheend.mp3'
+            "https://docs.google.com/uc?export=download&id=1OwEvW6Et8VGEhYCFByO-sYkWbz-B4U6V",
+            "https://docs.google.com/uc?export=download&id=19IzN8-R1PAcRGM2enB2jvtvjA6McIlc2",
+            "https://docs.google.com/uc?export=download&id=1YPPbbFprkuIdQFKO-JObTXZ9PT",
+            "https://docs.google.com/uc?export=download&id=19bxCKrGEZrCHbc-Zmobm-rqDxAQrt0hO",
+            "https://docs.google.com/uc?export=download&id=1X-14hdRaXrCHbc-Zmobm-rqDxAQrt0hO"
         ];
 
         let currentIndex = 0;
-        const audio = document.getElementById('audio');
-        const songTitle = document.getElementById('current-song');
+        const audio = document.getElementById("audio");
+        const songTitle = document.getElementById("songTitle");
 
-        function loadSong = 0;
-            audio.src = songs[index];
-            songTitle.innerText = 'Current Song: ' + songs[index];
-            audio.play();
+        function loadSong(index) {
+            if (index>=0 && index < songs.length) {
+                currentIndex = index;
+                audio.src = songs[index];
+                songTitle.innerText = 'Current Song: ' + songs[index];
+                audio.play();
+            }
         }
 
         function playPause() {
@@ -48,8 +51,13 @@
         }
 
         function nextSong() [
-              currentIndex = (currentIndex + 1) % songs.length;
-              loadSong(currentIndex);
+            currentIndex = (currentIndex + 1) % songs.length;
+            loadSong(currentIndex);
+        }
+
+        function prevSong() {
+            currentIndex = (currentIndex - 1 + songs.length) % songs.length;
+            loadSong(currentIndex);
         }
 
         function shuffleSongs() {
