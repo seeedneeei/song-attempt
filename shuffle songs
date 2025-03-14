@@ -1,0 +1,63 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fav songs</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .controls { margin: 20px; }
+        button { margin: 5px; padding: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Shuffe Songs</h1>
+    <p id="current-song">Current Song: None</p>
+    <audio id="audio" controls></audio>
+    <div class="controls">
+        <button onclick="prevSong()">Previous</button>
+        <button onclick="playPause()">Play/Pause</button>
+        <button onclick="nextSong()">Next</button>
+        <button onclick="shuffleSongs()">Shuffle</button>
+    </div>
+
+    <script>
+        const songs - [
+            'beautyandabeat.mp3',
+            'drinksorcoffee.mp3',
+            'meanit.mp3',
+            'neversaynever.mp3',
+            'parisintherain.mp3',
+            'toxictilltheend.mp3'
+        ];
+
+        let currentIndex = 0;
+        const audio = document.getElementById('audio');
+        const songTitle = document.getElementById('current-song');
+
+        function loadSong = 0;
+            audio.src = songs[index];
+            songTitle.innerText = 'Current Song: ' + songs[index];
+            audio.play();
+        }
+
+        function playPause() {
+            if (audio.paused) {
+                audio.play();
+            } else {
+                audio.pause();
+            }
+        }
+
+        function nextSong() [
+              currentIndex = (currentIndex + 1) % songs.length;
+              loadSong(currentIndex);
+        }
+
+        function shuffleSongs() {
+            songs.sort(() => Math.random() - 0.5);
+            currentIndex = 0;
+            loadSong(currentIndex);
+        }
+    </script>
+</body>
+</html>
