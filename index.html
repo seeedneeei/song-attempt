@@ -104,6 +104,8 @@
         <button onclick="nextSong()">⏭️ Next</button>
         <button onclick="shuffleSongs()">🔀 Shuffle</button>
     </div>
+
+    <div id="lyrics"></div>
     
     <script>
         const songs = [
@@ -136,45 +138,29 @@
         const lyricsContainer = document.getElementById("lyrics");
 
         function loadSong(index) {
-            if (index < 0) {
-                currentIndex = songs.length - 1;
-            } else if (index >= songs.length) {
-                currentIndex = 0;
-            } else {
-                currentIndex = index;
-            }
+            currentIndex = (index + songs.length) % songs.length;
             audio.src = songs[currentIndex].url;
             songTitle.innerText = 'Current Song: ' + (songs[currentIndex].title || 'Unknown');
-            loadlyrics(songs[currentIndex].lyrics);
+            loadLyrics(songs[currentIndex].lyrics || []);
             audio.load();
             audio.play();
         }
 
         function playPause() {
-            if (audio.paused) {
-                audio.play();
-            } else {
-                audio.pause();
-            }
+            audio.paused ? audio.play() : audio.pause();
         }
 
         function nextSong() {
-            currentIndex = (currentIndex + 1) % songs.length;
-            loadSong(currentIndex);
+            loadSong(currentIndex + 1);
         }
 
         function prevSong() {
-            currentIndex = (currentIndex - 1 + songs.length) % songs.length;
-            loadSong(currentIndex);
+            loadSong(currentIndex - 1);
         }
 
         function shuffleSongs() {
-            for (let i = songs.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [songs[i], songs[j]] = [songs[j], songs[i]];
-            }
-            currentIndex = 0;
-            loadSong(currentIndex);
+            songs.sort(() => Math.random() - 0.5);
+            loadSong(0);
         }
 
         function loadLyrics(lyrics) {
@@ -182,13 +168,13 @@
             lyrics.forEach((line, index) => {
                 const p = document.createElement("p");
                 p.textContent = line.text;
-                p.classList.add("lyrics-line");
-                if (index === 0) p.classList.add("active-line");
+                p.classList.add("lyric-line");
                 lyricsContainer.appendChild(p);
             });
         }
 
         function updateLyrics() {
+            if (!songs[currentIndex].lyrics) return;
             const currentTime = audio.currentTime;
             const lyrics = songs[currentIndex].lyrics;
             let activeIndex = -1;
@@ -199,20 +185,14 @@
                 }
             }
 
-            const lyricElements = document.querySelectorAll(".lyric-line");
-            lyricElements.forEach((line, index) => {
-                line.classList.remove("active-line");
-                if (index === activeIndex) {
-                    line.classList.add("active-line");
-                }
+            document.querySelectorAll(".lyric-line").forEach((line, index) => {
+                line.classList.toggle("active-line", index === activeIndex);
             });
         }
 
-        // Automatically play the next song when the current one ends
         audio.addEventListener('ended', nextSong);
         audio.addEventListener('timeupdate', updateLyrics);
 
-        // Initialize the first song
         loadSong(currentIndex);
     </script>
 </body>
