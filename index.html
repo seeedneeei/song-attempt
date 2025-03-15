@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fav Songs Player</title>
     <style>
-        /* Ensure the gradient background covers the entire page */
         html, body {
             height: 100%;
             margin: 0;
@@ -73,6 +72,26 @@
         button:active {
             transform: scale(0.95);
         }
+
+        #lyrics {
+            margin-top: 20px;
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+
+        .lyric-line {
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+        .active-line {
+            opacity: 1;
+            font-weight: bold;
+            color: yellow;
+        }
     </style>
 </head>
 <body>
@@ -88,13 +107,25 @@
     
     <script>
         const songs = [
-            { title: "Drinks or Coffee", url: "https://audio.jukehost.co.uk/nYbrMTwjcOq8N9Rlz5GmgQGKPe0MnVyx" },
             { title: "Mean It", url: "https://audio.jukehost.co.uk/SyzHkAGbpgQJyA9aiODZd0AX2VIIVR6m" },
             { title: "Never Say Never", url: "https://audio.jukehost.co.uk/uUgnsuBoupsZmUe1jVq0e0AG9UNrnxOr" },
             { title: "Paris in the Rain", url: "https://audio.jukehost.co.uk/WPa0Ld8qO4eVLqxw07fNUcbxd2SsEw9D" },
             { title: "like JENNIE", url: "https://audio.jukehost.co.uk/V5FvLRCNC3gXXjdWEXPgN6ryYYfRiC2x" },
             { title: "I Like It", url: "https://audio.jukehost.co.uk/McJa0dgsqa0tlk2Tz3vpliUJlZ1pe0zE" },
-            { title: "Ditto", url: "https://audio.jukehost.co.uk/GtkNv1RptlLAbmvdE4JPzPgtM365TRqq" },
+            { 
+                title: "Ditto", 
+                url: "https://audio.jukehost.co.uk/GtkNv1RptlLAbmvdE4JPzPgtM365TRqq",
+                lyrics: [
+                    { time: 1, text: "Hoo-ooh-ooh-ooh"},
+                    { time: 9, text: "Hoo-ooh-ooh-ooh"},
+                    { time: 14, text: "Stay in the middle, Like you a little"},
+                    { time: 18, text: "Don't want no riddle, 말해줘 say it back, oh, say it ditto"},
+                    { time: 23, text: "아침은 너무 멀어 so say it ditto"},
+                    { time: 29, text: "훌쩍 커버렸어 함께한 기억처럼"},
+                    { time: 32, text: "널 보는 내 마음은 어느새 여름 지나 가을"},
+                    { time: 37, text: "기다렸지 all this time"}
+                ]
+            },
             { title: "Low", url: "https://audio.jukehost.co.uk/vIQ5nmP3pdhptYhD7qzMsoQADgxCSYhS"},
             { title: "Sex", url: "https://audio.jukehost.co.uk/V72EUdawZrx4zfmaMZ28QTOxXDIB2b2R"}
         ];
