@@ -133,6 +133,7 @@
         let currentIndex = 0;
         const audio = document.getElementById("audio");
         const songTitle = document.getElementById("current-song");
+        const lyricsContainer = document.getElementById("lyrics");
 
         function loadSong(index) {
             if (index < 0) {
@@ -144,6 +145,7 @@
             }
             audio.src = songs[currentIndex].url;
             songTitle.innerText = 'Current Song: ' + (songs[currentIndex].title || 'Unknown');
+            loadlyrics(songs[currentIndex].lyrics);
             audio.load();
             audio.play();
         }
@@ -175,8 +177,40 @@
             loadSong(currentIndex);
         }
 
+        function loadLyrics(lyrics) {
+            lyricsContainer.innerHTML = "";
+            lyrics.forEach((line, index) => {
+                const p = document.createElement("p");
+                p.textContent = line.text;
+                p.classList.add("lyrics-line");
+                if (index === 0) p.classList.add("active-line");
+                lyricsContainer.appendChild(p);
+            });
+        }
+
+        function updateLyrics() {
+            const currentTime = audio.currentTime;
+            const lyrics = songs[currentIndex].lyrics;
+            let activeIndex = -1;
+
+            for (let i = 0; i < lyrics.length; i++) {
+                if (currentTime >= lyrics[i].time) {
+                    activeIndex = i;
+                }
+            }
+
+            const lyricElements = document.querySelectorAll(".lyric-line");
+            lyricElements.forEach((line, index) => {
+                line.classList.remove("active-line");
+                if (index === activeIndex) {
+                    line.classList.add("active-line");
+                }
+            });
+        }
+
         // Automatically play the next song when the current one ends
         audio.addEventListener('ended', nextSong);
+        audio.addEventListener('timeupdate', updateLyrics);
 
         // Initialize the first song
         loadSong(currentIndex);
