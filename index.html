@@ -120,7 +120,7 @@
                     { time: 5, text: "Whoo"},
                     { time: 6, text: "Cops and Robbers, chase each other, full of energy"},
                     { time: 10, text: "Pushing me further, pulling me closer, some sorta chemistry"},
-                    { time: 13, text: "I think I'm addicted to the title, "You And Me""},
+                    { time: 13, text: "I think I'm addicted to the title, \"You And Me\""},
                     { time: 16, text: "Don't ask, "What are we?" Ooh, ooh, I like it, baby"},
                     { time: 19, text: "이 관계를 정의하지 마"},
                     { time: 20, text: "사랑은 모르겠고 좋아하는 사이"},
@@ -169,11 +169,14 @@
             songTitle.innerText = 'Current Song: ' + (songs[currentIndex].title || 'Unknown');
             loadLyrics(songs[currentIndex].lyrics || []);
             audio.load();
-            audio.play();
+            audio.play().catch(error => console.log("Playback error:", error));
         }
 
         function playPause() {
-            audio.paused ? audio.play() : audio.pause();
+            if (audio.paused) {
+                audio.play().catch(error => console.log("Autoplay blocked:", error));
+            } else {
+                audio.pause();
         }
 
         function nextSong() {
@@ -191,10 +194,9 @@
 
         function loadLyrics(lyrics) {
             lyricsContainer.innerHTML = "";
-            lyrics.forEach((line, index) => {
+            lyrics.forEach(line => {
                 const p = document.createElement("p");
-                p.textContent = line.text;
-                p.classList.add("lyric-line");
+                p.innerText = line.Text);
                 lyricsContainer.appendChild(p);
             });
         }
@@ -206,7 +208,7 @@
             let activeIndex = -1;
 
             for (let i = 0; i < lyrics.length; i++) {
-                if (currentTime >= lyrics[i].time) {
+                if (currentTime >= lyrics[i].time - 0.5) {
                     activeIndex = i;
                 }
             }
